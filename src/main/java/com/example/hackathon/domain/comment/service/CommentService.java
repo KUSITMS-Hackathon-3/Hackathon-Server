@@ -12,6 +12,6 @@ import java.util.List;
 public interface CommentService {
     CreateResponse createComment(CreateRequest createRequest);
     Comment deleteComment(DeleteRequest deleteRequest);
-    List<GetResponse> getAllCommentsByMemoId(Long memoId);
+    List<GetResponse> getAllCommentsByBoardId(Long boardId);
     Comment validateCommentId(Long commentId);
 }

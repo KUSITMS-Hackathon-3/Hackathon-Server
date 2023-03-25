@@ -1,15 +1,17 @@
 package com.example.hackathon.domain.board.service;
 
+import com.example.hackathon.domain.board.dto.BoardDto;
 import com.example.hackathon.domain.board.dto.BoardDto.CreateRequest;
 import com.example.hackathon.domain.board.dto.BoardDto.CreateResponse;
 import com.example.hackathon.domain.board.entity.Board;
-import com.example.hackathon.domain.board.exception.NotFoundCommentException;
+import com.example.hackathon.domain.board.exception.NotFoundBoardException;
 import com.example.hackathon.domain.board.repository.BoardRepository;
 import com.example.hackathon.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +36,24 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Board validateByBoardId(Long boardId) {
-        return this.boardRepository.findNotDeletedByBoardId(boardId).orElseThrow(NotFoundCommentException::new);
+        return this.boardRepository.findNotDeletedByBoardId(boardId).orElseThrow(NotFoundBoardException::new);
+    }
+
+    @Override
+    public Board deleteBoard(Long boardId) {
+        Board board=this.validateByBoardId(boardId);
+        board.deleteBoard();
+        return board;
+    }
+
+    @Override
+    public void likeBoard(Long boardId) {
+        Board board=this.validateByBoardId(boardId);
+        board.likeBoard();
+    }
+
+    @Override
+    public List<BoardDto.GetAllResponse> findAllByCreatedDate() {
+        return this.boardRepository.findAllByCreatedDate();
     }
 }
