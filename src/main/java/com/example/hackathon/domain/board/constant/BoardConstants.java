@@ -22,6 +22,8 @@ public class BoardConstants {
         UPDATE_BOARD_SUCCESS("게시글을 수정했습니다."),
         DELETE_BOARD_SUCCESS("게시글을 삭제했습니다."),
         LIKE_BOARD_SUCCESS("게시글을 좋아요 눌렀습니다"),
+        GET_ALL_BOARD_SUCCESS("게시글을 작성 시간순으로 조회했습니다."),
+        GET_DETAIL_BOARD_SUCCESS("게시글을 상세하게 조회했습니다");
         GET_ALL_BOARD_SUCCESS("게시글을 작성 시간순으로 조회했습니다.");
         private final String message;
     }

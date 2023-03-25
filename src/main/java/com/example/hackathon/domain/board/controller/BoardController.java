@@ -1,5 +1,6 @@
 package com.example.hackathon.domain.board.controller;
 
+import com.example.hackathon.domain.board.constant.BoardConstants;
 import com.example.hackathon.domain.board.constant.BoardConstants.EBoardController;
 import com.example.hackathon.domain.board.dto.BoardDto;
 import com.example.hackathon.domain.board.dto.BoardDto.CreateRequest;
@@ -18,6 +19,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+import static com.example.hackathon.domain.board.constant.BoardConstants.EBoardResponseMessage.CREATE_BOARD_SUCCESS;
+import static com.example.hackathon.domain.board.constant.BoardConstants.EBoardResponseMessage.DELETE_BOARD_SUCCESS;
 import static com.example.hackathon.domain.board.constant.BoardConstants.EBoardResponseMessage.*;
 
 @RequiredArgsConstructor
@@ -59,5 +62,5 @@ public class BoardController {
     public ResponseEntity<ResponseDto<List<GetAllResponse>>> getAllBoard(){
         return ResponseEntity.ok(ResponseDto.create(GET_ALL_BOARD_SUCCESS.getMessage(),this.boardService.findAllByCreatedDate()));
     }
-
+    
 }

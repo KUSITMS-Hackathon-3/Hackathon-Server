@@ -1,12 +1,10 @@
 package com.example.hackathon.domain.board.dto;
 
 import com.example.hackathon.domain.board.entity.Board;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import org.springframework.data.jpa.repository.Query;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
