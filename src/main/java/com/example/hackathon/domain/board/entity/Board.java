@@ -22,4 +22,7 @@ public class Board {
     @ManyToOne
     @JoinColumn(name = "userIdx")
     private User user;
+
+    public void updateAll(String title, String content) {
+    }
 }

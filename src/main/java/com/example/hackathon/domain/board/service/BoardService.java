@@ -7,6 +7,7 @@ import com.example.hackathon.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +32,16 @@ public class BoardService {
         boardRepository.save(board);
     }
 
+    public void update(Long boardIdx, String title, String content) throws Exception {
+        Optional<Board> optionalBoard = boardRepository.findById(boardIdx);
+        if (optionalBoard.isEmpty())
+            throw new Exception();
+
+        Board findBoard = optionalBoard.get();
+
+        findBoard.updateAll(title, content);
+    }
+
     public void delete(Long boardIdx) throws Exception {
         Optional<Board> optionalBoard = boardRepository.findById(boardIdx);
 
@@ -40,5 +51,17 @@ public class BoardService {
         Board findBoard = optionalBoard.get();
 
         boardRepository.delete(findBoard);
+    }
+
+    public void findAll() {
+        List<Board> allBoards = boardRepository.findAll();
+    }
+
+    public void findById(Long boardIdx) throws Exception {
+        Optional<Board> optionalBoard = boardRepository.findById(boardIdx);
+        if (optionalBoard.isEmpty())
+            throw new Exception();
+
+        Board findBoard = optionalBoard.get();
     }
 }
