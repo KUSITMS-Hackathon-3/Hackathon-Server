@@ -1,7 +1,6 @@
-package com.example.hackathon.domain.board.exception;
+package com.example.hackathon.domain.comment.exception;
 
-import com.example.hackathon.domain.board.constant.BoardConstants;
-import com.example.hackathon.domain.comment.constant.CommentConstants;
+import org.springframework.http.HttpStatus;
 
 import static com.example.hackathon.domain.comment.constant.CommentConstants.CommentExceptionList.NOT_FOUND_COMMENT;
 
@@ -13,3 +12,4 @@ public class NotFoundCommentException extends CommentException {
         );
     }
 }
+

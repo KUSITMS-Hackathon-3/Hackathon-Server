@@ -1,4 +1,4 @@
-package com.example.hackathon.domain.board.exception;
+package com.example.hackathon.domain.comment.exception;
 
 import com.example.hackathon.global.exception.ApplicationException;
 import org.springframework.http.HttpStatus;
