@@ -2,6 +2,7 @@ package com.example.hackathon.domain.certification.service;
 
 import com.example.hackathon.domain.certification.dto.CertificationDateDto;
 import com.example.hackathon.domain.certification.dto.CertificationInsertDto;
+import com.example.hackathon.domain.certification.dto.CertificationMonthDto;
 import com.example.hackathon.domain.certification.entity.Certification;
 import com.example.hackathon.domain.certification.repository.CertificationRepository;
 import com.example.hackathon.domain.user.entity.User;
@@ -40,8 +41,8 @@ public class CertificationService {
          */
     }
 
-    public CertificationDateDto findDateCertification(String startDay) {
-        startDay += "-00-00";
+    public CertificationDateDto findDateCertification(CertificationDateDto certificationDto) {
+        String startDay = certificationDto.getDate() + "-00-00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
 
         LocalDateTime start = LocalDateTime.parse(startDay, formatter);
@@ -64,11 +65,11 @@ public class CertificationService {
         return certificationDateDto;
     }
 
-    public List<String> findAllCertification(String month) {
-        month += "-01-00-00";
+    public List<String> findAllCertification(CertificationMonthDto certificationMonthDto) {
+        String parseMonth = certificationMonthDto.getMonth() + "-01-00-00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
 
-        LocalDateTime start = LocalDateTime.parse(month, formatter);
+        LocalDateTime start = LocalDateTime.parse(parseMonth, formatter);
         LocalDateTime end = start.plusMonths(1L);
 
         List<Certification> certifications = certificationRepository.findAllByCreatedAtBetween(start, end);
