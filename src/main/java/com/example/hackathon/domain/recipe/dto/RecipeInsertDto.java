@@ -1,6 +1,7 @@
 package com.example.hackathon.domain.recipe.dto;
 
 import com.example.hackathon.domain.rcontent.entity.Rcontent;
+import com.example.hackathon.domain.ringredient.entity.Ringredient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.List;
 @Setter
 public class RecipeInsertDto {
     private List<Rcontent> rcontents;
+    private List<Ringredient> ringredients;
     private String title;
     private int level;
     private Long userIdx;
