@@ -51,4 +51,16 @@ public class User extends BaseTimeEntity {
         password = passwordEncoder.encode(password);
     }
 
+    public void certificationReward(){
+        this.score+=25;
+        if(score/50>level){
+            this.level+=1;
+        }
+    }
+    public void recipeReward(){
+        this.score+=50;
+        if(score/50>level){
+            this.level+=1;
+        }
+    }
 }
