@@ -1,4 +1,4 @@
-package com.example.hackathon.domain.recipe;
+package com.example.hackathon.domain.recipe.controller;
 
 import com.example.hackathon.global.dto.ResponseDto;
 import com.example.hackathon.domain.recipe.constant.RecipeConstant.EBoardResponseMessage;
