@@ -1,8 +1,10 @@
 package com.example.hackathon.domain.recipe.service;
 
+import com.example.hackathon.domain.comment.repository.CommentRepository;
 import com.example.hackathon.domain.rcontent.entity.Rcontent;
 import com.example.hackathon.domain.rcontent.repository.RcontentRepository;
 import com.example.hackathon.domain.recipe.dto.FeedResponseDto;
+import com.example.hackathon.domain.recipe.dto.RcontentDto;
 import com.example.hackathon.domain.recipe.dto.RecipeInsertDto;
 import com.example.hackathon.domain.recipe.dto.RecipeResponseDto;
 import com.example.hackathon.domain.recipe.entity.Recipe;
@@ -27,13 +29,12 @@ public class RecipeService {
     private final RcontentRepository rcontentRepository;
     private final UserRepository userRepository;
     private final RingredientRepository ringredientRepository;
+    private final CommentRepository commentRepository;
 
-    public void save(RecipeInsertDto recipeInsertDto) throws Exception {
-        Optional<User> optionalUser = userRepository.findById(recipeInsertDto.getUserIdx());
-        if (optionalUser.isEmpty())
-            throw new Exception();
+    public void save(RecipeInsertDto recipeInsertDto) {
+        User user = userRepository.findById(recipeInsertDto.getUserIdx())
+                .orElseThrow();
 
-        User user = optionalUser.get();
         Recipe recipe = Recipe.builder()
                 .imageUrl(recipeInsertDto.getImageUrl())
                 .level(recipeInsertDto.getLevel())
@@ -79,14 +80,21 @@ public class RecipeService {
         Recipe recipe = optionalRecipe.get();
 
         List<Rcontent> rContents = rcontentRepository.findAllByRecipe_RecipeIdx(recipeIdx);
+        List<RcontentDto> rcontentDtos = new ArrayList<>();
+
+
+        for (Rcontent rcontent : rContents) {
+            RcontentDto rcontentDto = RcontentDto.of(rcontent);
+            rcontentDtos.add(rcontentDto);
+        }
+
 
         RecipeResponseDto recipeResponseDto = RecipeResponseDto.builder()
                 .createdDate(recipe.getCreatedAt())
                 .imageUrl(recipe.getImageUrl())
                 .level(recipe.getLevel())
                 .title(recipe.getTitle())
-                .rContents(rContents)
-                .nickname(recipe.getUser().getNickName())
+                .rcontentDtos(rcontentDtos)
                 .userIdx(recipe.getUser().getUserIdx())
                 .build();
 
