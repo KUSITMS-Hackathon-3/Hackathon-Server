@@ -8,14 +8,15 @@ import com.example.hackathon.domain.certification.repository.CertificationReposi
 import com.example.hackathon.domain.user.entity.User;
 import com.example.hackathon.domain.user.exception.NotFoundUserIdException;
 import com.example.hackathon.domain.user.repository.UserRepository;
-import com.example.hackathon.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
