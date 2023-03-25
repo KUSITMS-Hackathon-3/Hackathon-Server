@@ -1,12 +1,11 @@
 package com.example.hackathon.domain.recipe.service;
 
 import com.example.hackathon.domain.comment.repository.CommentRepository;
+import com.example.hackathon.domain.rcomment.entity.Rcomment;
+import com.example.hackathon.domain.rcomment.repository.RcommentRepository;
 import com.example.hackathon.domain.rcontent.entity.Rcontent;
 import com.example.hackathon.domain.rcontent.repository.RcontentRepository;
-import com.example.hackathon.domain.recipe.dto.FeedResponseDto;
-import com.example.hackathon.domain.recipe.dto.RcontentDto;
-import com.example.hackathon.domain.recipe.dto.RecipeInsertDto;
-import com.example.hackathon.domain.recipe.dto.RecipeResponseDto;
+import com.example.hackathon.domain.recipe.dto.*;
 import com.example.hackathon.domain.recipe.entity.Recipe;
 import com.example.hackathon.domain.recipe.repository.RecipeRepository;
 import com.example.hackathon.domain.ringredient.entity.Ringredient;
@@ -29,7 +28,7 @@ public class RecipeService {
     private final RcontentRepository rcontentRepository;
     private final UserRepository userRepository;
     private final RingredientRepository ringredientRepository;
-    private final CommentRepository commentRepository;
+    private final RcommentRepository rcommentRepository;
 
     public void save(RecipeInsertDto recipeInsertDto) {
         User user = userRepository.findById(recipeInsertDto.getUserIdx())
@@ -82,10 +81,17 @@ public class RecipeService {
         List<Rcontent> rContents = rcontentRepository.findAllByRecipe_RecipeIdx(recipeIdx);
         List<RcontentDto> rcontentDtos = new ArrayList<>();
 
+        List<Rcomment> rcomments = rcommentRepository.findAllByRecipe_RecipeIdx(recipeIdx);
+        List<CommentDto> commentDtos = new ArrayList<>();
 
         for (Rcontent rcontent : rContents) {
             RcontentDto rcontentDto = RcontentDto.of(rcontent);
             rcontentDtos.add(rcontentDto);
+        }
+
+        for (Rcomment rcomment : rcomments) {
+            CommentDto commentDto = CommentDto.of(rcomment);
+            commentDtos.add(commentDto);
         }
 
 
@@ -95,7 +101,10 @@ public class RecipeService {
                 .level(recipe.getLevel())
                 .title(recipe.getTitle())
                 .rcontentDtos(rcontentDtos)
+                .likeNum(recipe.getLikeNum())
                 .userIdx(recipe.getUser().getUserIdx())
+                .commentDtos(commentDtos)
+                .tag(recipe.getTag())
                 .build();
 
         return recipeResponseDto;

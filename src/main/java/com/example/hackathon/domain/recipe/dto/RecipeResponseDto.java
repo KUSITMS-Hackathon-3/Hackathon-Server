@@ -19,7 +19,7 @@ public class RecipeResponseDto {
     private String imageUrl;
     private Long userIdx;
     private String tag;
-    private int like;
+    private int likeNum;
     private List<RcontentDto> rcontentDtos;
     private List<CommentDto> commentDtos;
 }
