@@ -1,12 +1,9 @@
 package com.example.hackathon.domain.user.dto;
 
-import com.example.hackathon.domain.global.dto.TokenInfoResponse;
+import com.example.hackathon.global.dto.TokenInfoResponse;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
@@ -15,6 +12,7 @@ public abstract class UserDto {
     @Getter
     @AllArgsConstructor
     @Builder
+    @NoArgsConstructor
     @ApiModel(description = "회원가입을 위한 요청객체")
     public static class SignupRequest {
         private String userId;
@@ -25,6 +23,7 @@ public abstract class UserDto {
     @Getter
     @AllArgsConstructor
     @Builder
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @ApiModel(description = "로그인을 위한 요청객체")
     public static class LoginRequest {
         @NotBlank(message = "아이디를 입력해주세요")

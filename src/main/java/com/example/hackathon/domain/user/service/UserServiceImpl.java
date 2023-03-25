@@ -1,7 +1,7 @@
 package com.example.hackathon.domain.user.service;
 
-import com.example.hackathon.domain.global.config.security.jwt.JwtTokenProvider;
-import com.example.hackathon.domain.global.dto.TokenInfoResponse;
+import com.example.hackathon.global.config.security.jwt.JwtTokenProvider;
+import com.example.hackathon.global.dto.TokenInfoResponse;
 import com.example.hackathon.domain.user.dto.UserDto;
 import com.example.hackathon.domain.user.dto.UserDto.LoginRequest;
 import com.example.hackathon.domain.user.entity.User;
@@ -21,7 +21,6 @@ import static com.example.hackathon.domain.user.constant.UserConstants.Role.ROLE
 
 @RequiredArgsConstructor
 @Service
-@Slf4j
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;

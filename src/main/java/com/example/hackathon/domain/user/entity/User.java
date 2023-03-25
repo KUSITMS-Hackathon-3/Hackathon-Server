@@ -1,9 +1,8 @@
 package com.example.hackathon.domain.user.entity;
 
 import com.example.hackathon.domain.board.entity.Board;
-import com.example.hackathon.domain.certification.entity.Certification;
-import com.example.hackathon.domain.global.entity.BaseTimeEntity;
-import com.example.hackathon.domain.recipe.entity.Recipe;
+import com.example.hackathon.domain.comment.entity.Comment;
+import com.example.hackathon.global.entity.BaseTimeEntity;
 import com.example.hackathon.domain.user.constant.UserConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,19 +40,15 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private UserConstants.Role role;
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Board> boards=new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Certification> certifications=new ArrayList<>();
-//
-//    @OneToMany(mappedBy="user")
-//    private List<Recipe> recipes=new ArrayList<>();
+
+    @OneToMany(mappedBy="user")
+    private List<Board> boards=new ArrayList<>();
+
+    @OneToMany(mappedBy="user")
+    private List<Comment> comments=new ArrayList<>();
 
     public void encryptPassword(PasswordEncoder passwordEncoder) {
         password = passwordEncoder.encode(password);
     }
-
 
 }
