@@ -59,6 +59,5 @@ public class BoardController {
     public ResponseEntity<ResponseDto<List<GetAllResponse>>> getAllBoard(){
         return ResponseEntity.ok(ResponseDto.create(GET_ALL_BOARD_SUCCESS.getMessage(),this.boardService.findAllByCreatedDate()));
     }
-
-    //게시글 단건 조회 댓글 까지
+    
 }
