@@ -1,8 +1,9 @@
 package com.example.hackathon.domain.recipe.entity;
 
-import com.example.hackathon.domain.global.entity.BaseTimeEntity;
+import com.example.hackathon.global.entity.BaseTimeEntity;
 import com.example.hackathon.domain.rcontent.entity.Rcontent;
 import com.example.hackathon.domain.user.entity.User;
+import com.example.hackathon.global.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,6 +1,6 @@
 package com.example.hackathon.domain.certification.entity;
 
-import com.example.hackathon.domain.global.entity.BaseTimeEntity;
+import com.example.hackathon.global.entity.BaseTimeEntity;
 import com.example.hackathon.domain.user.entity.User;
 import lombok.*;
 

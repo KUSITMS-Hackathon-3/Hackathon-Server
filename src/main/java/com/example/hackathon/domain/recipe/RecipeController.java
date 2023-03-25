@@ -1,6 +1,6 @@
 package com.example.hackathon.domain.recipe;
 
-import com.example.hackathon.domain.global.dto.ResponseDto;
+import com.example.hackathon.global.dto.ResponseDto;
 import com.example.hackathon.domain.recipe.constant.RecipeConstant.EBoardResponseMessage;
 import com.example.hackathon.domain.recipe.dto.FeedResponseDto;
 import com.example.hackathon.domain.recipe.dto.RecipeInsertDto;
