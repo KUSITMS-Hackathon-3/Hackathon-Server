@@ -53,8 +53,9 @@ public class BoardService {
         boardRepository.delete(findBoard);
     }
 
-    public void findAll() {
-        List<Board> allBoards = boardRepository.findAll();
+    public List<Board> findAll() {
+        List<Board> allBoards = boardRepository.findAllByOrderByCreatedAtDesc();
+        return allBoards;
     }
 
     public void findById(Long boardIdx) throws Exception {

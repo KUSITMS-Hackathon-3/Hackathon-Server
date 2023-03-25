@@ -1,5 +1,6 @@
 package com.example.hackathon.domain.recipe.entity;
 
+import com.example.hackathon.domain.global.entity.BaseTimeEntity;
 import com.example.hackathon.domain.rcontent.entity.Rcontent;
 import com.example.hackathon.domain.user.entity.User;
 import lombok.*;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Builder
-public class Recipe {
+public class Recipe extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recipeIdx;

@@ -3,6 +3,7 @@ package com.example.hackathon.domain.recipe.service;
 import com.example.hackathon.domain.rcontent.entity.Rcontent;
 import com.example.hackathon.domain.rcontent.repository.RcontentRepository;
 import com.example.hackathon.domain.recipe.dto.RecipeInsertDto;
+import com.example.hackathon.domain.recipe.dto.RecipeResponseDto;
 import com.example.hackathon.domain.recipe.entity.Recipe;
 import com.example.hackathon.domain.recipe.repository.RecipeRepository;
 import com.example.hackathon.domain.user.entity.User;
@@ -43,7 +44,28 @@ public class RecipeService {
         }
     }
 
-    public void findAllFeeds() {
-        List<Recipe> allRecipes = recipeRepository.findAll();
+    public List<Recipe> findAllFeeds() {
+        List<Recipe> allRecipes = recipeRepository.findAllByOrderByCreatedAtDesc();
+
+        return allRecipes;
+    }
+
+    public RecipeResponseDto findRecipe(Long recipeIdx) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeIdx);
+        Recipe recipe = optionalRecipe.get();
+
+        List<Rcontent> rContents = rcontentRepository.findAllByRecipe_RecipeIdx(recipeIdx);
+
+        RecipeResponseDto recipeResponseDto = RecipeResponseDto.builder()
+                .createdDate(recipe.getCreatedAt())
+                .imageUrl(recipe.getImageUrl())
+                .level(recipe.getLevel())
+                .title(recipe.getTitle())
+                .rContents(rContents)
+                .nickname(recipe.getUser().getNickName())
+                .userIdx(recipe.getUser().getUserIdx())
+                .build();
+
+        return recipeResponseDto;
     }
 }
