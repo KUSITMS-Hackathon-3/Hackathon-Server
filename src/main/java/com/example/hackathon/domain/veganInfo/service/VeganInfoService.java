@@ -15,7 +15,7 @@ public class VeganInfoService {
     Random rd = new Random();
 
     public VeganInfoDto getKnowledge() {
-        int idx = rd.nextInt(10);
+        int idx = rd.nextInt(10)+1;
         VeganInfo byId = veganInfoRepository.findById((long) idx).orElseThrow();
         VeganInfoDto veganInfoDto = new VeganInfoDto(byId.getTitle(), byId.getComment());
         return veganInfoDto;

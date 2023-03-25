@@ -5,6 +5,8 @@ import com.example.hackathon.domain.veganInfo.constant.VeganConstant;
 import com.example.hackathon.domain.veganInfo.dto.VeganInfoDto;
 import com.example.hackathon.domain.veganInfo.service.VeganInfoService;
 import com.example.hackathon.global.dto.ResponseDto;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +18,12 @@ import static com.example.hackathon.domain.veganInfo.constant.VeganConstant.EBoa
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/veganInfo")
+@Api(tags = "Vegan API")
 public class VeganController {
+
     private final VeganInfoService veganInfoService;
 
+    @ApiOperation(value = "채식정보", notes = "채식정보를 가져옵니다.")
     @GetMapping
     public ResponseEntity<ResponseDto<VeganInfoDto>> getInfo() {
         VeganInfoDto knowledge = veganInfoService.getKnowledge();
