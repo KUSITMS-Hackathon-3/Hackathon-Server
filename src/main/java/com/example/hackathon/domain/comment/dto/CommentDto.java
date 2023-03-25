@@ -17,6 +17,7 @@ public abstract class CommentDto {
     @Getter
     @AllArgsConstructor
     @Builder
+    @NoArgsConstructor
     @ApiModel(description = "댓글 작성을 위한 요청 객체")
     public static class CreateRequest {
 
@@ -62,7 +63,7 @@ public abstract class CommentDto {
         private String userNickName;
         private LocalDateTime createdAt;
 
-        public GetResponse(Long commentIdz, String content, Long userIdx, String userNickName, LocalDateTime createdAt) {
+        public GetResponse(Long commentIdx, String content, Long userIdx, String userNickName, LocalDateTime createdAt) {
             this.commentIdx = commentIdx;
             this.content = content;
             this.userIdx = userIdx;

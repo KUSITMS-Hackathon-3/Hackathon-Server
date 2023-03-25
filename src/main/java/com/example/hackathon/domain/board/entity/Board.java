@@ -48,6 +48,14 @@ public class Board extends BaseTimeEntity {
         user.getBoards().add(this);
     }
 
+    public void deleteBoard(){
+        this.isDeleted=true;
+    }
+
+    public void likeBoard(){
+        this.likeNums+=1;
+    }
+
     public void updateAll(String title, String content) {
     }
 }

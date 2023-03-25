@@ -35,10 +35,10 @@ public class CommentController {
         return ResponseEntity.ok(ResponseDto.create(ECommentResponseMessage.DELETE_COMMENT_SUCCESS.getMessage()));
     }
 
-    @ApiOperation(value = "메모의 댓글 목록 조회", notes = "메모의 댓글 목록을 조회합니다.")
-    @GetMapping("/{memoId}")
-    public ResponseEntity<ResponseDto<List<CommentDto.GetResponse>>> getAllComments(@PathVariable Long memoId){
+    @ApiOperation(value = "게시글의 댓글 목록 조회", notes = "게시글의 댓글 목록을 조회합니다.")
+    @GetMapping("/{boardIdx}")
+    public ResponseEntity<ResponseDto<List<CommentDto.GetResponse>>> getAllComments(@PathVariable Long boardIdx){
         return ResponseEntity.ok(ResponseDto.create(ECommentResponseMessage.GET_ALL_DETAIL_COMMENTS_SUCCESS.getMessage(),
-                this.commentService.getAllCommentsByMemoId(memoId)));
+                this.commentService.getAllCommentsByBoardId(boardIdx)));
     }
 }
