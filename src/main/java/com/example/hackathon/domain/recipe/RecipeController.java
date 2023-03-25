@@ -2,6 +2,7 @@ package com.example.hackathon.domain.recipe;
 
 import com.example.hackathon.domain.global.dto.ResponseDto;
 import com.example.hackathon.domain.recipe.constant.RecipeConstant.EBoardResponseMessage;
+import com.example.hackathon.domain.recipe.dto.FeedResponseDto;
 import com.example.hackathon.domain.recipe.dto.RecipeInsertDto;
 import com.example.hackathon.domain.recipe.dto.RecipeResponseDto;
 import com.example.hackathon.domain.recipe.entity.Recipe;
@@ -28,9 +29,9 @@ public class RecipeController {
     }
 
     @GetMapping("/findAllFeeds")
-    public ResponseEntity<ResponseDto<List<Recipe>>> findAllFeeds() {
-        List<Recipe> allFeeds = recipeService.findAllFeeds();
-        ResponseDto<List<Recipe>> responseDto = ResponseDto.create(EBoardResponseMessage.SELECT_ALL_SUCCESS.getMessage(), allFeeds);
+    public ResponseEntity<ResponseDto<List<FeedResponseDto>>> findAllFeeds() {
+        List<FeedResponseDto> feedResponseDtos = recipeService.findAllFeeds();
+        ResponseDto<List<FeedResponseDto>> responseDto = ResponseDto.create(EBoardResponseMessage.SELECT_ALL_SUCCESS.getMessage(), feedResponseDtos);
         return ResponseEntity.ok(responseDto);
     }
 
