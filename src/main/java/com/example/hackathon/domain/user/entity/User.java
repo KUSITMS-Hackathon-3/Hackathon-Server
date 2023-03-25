@@ -7,7 +7,7 @@ import com.example.hackathon.domain.recipe.entity.Recipe;
 import com.example.hackathon.domain.user.constant.UserConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
 public class User extends BaseTimeEntity {
 
     @Id
@@ -28,7 +28,7 @@ public class User extends BaseTimeEntity {
     @Column(name="user_idx")
     private Long userIdx;
 
-    private String id;
+    private String userId;
 
     private String password;
 
@@ -42,7 +42,7 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private UserConstants.Role role;
-
+//
 //    @OneToMany(mappedBy = "user")
 //    private List<Board> boards=new ArrayList<>();
 //
@@ -55,5 +55,6 @@ public class User extends BaseTimeEntity {
     public void encryptPassword(PasswordEncoder passwordEncoder) {
         password = passwordEncoder.encode(password);
     }
+
 
 }

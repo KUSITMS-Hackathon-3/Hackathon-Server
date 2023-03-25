@@ -19,9 +19,9 @@ public class UserRepostioryImpl implements UserRepositoryCustom{
     }
 
     @Override
-    public Optional<User> findById(String id) {
+    public Optional<User> findByUserId(String userId) {
         return Optional.ofNullable(queryFactory.selectFrom(user)
-                .where(user.id.eq(id))
+                .where(user.userId.eq(userId))
                 .fetchFirst());
     }
 }
