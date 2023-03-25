@@ -9,7 +9,7 @@ public class RecipeConstant {
     @Getter
     @RequiredArgsConstructor
     public enum EBoardResponseMessage{
-        SAVE_SUCCESS("인증에 성공했습니다"),
+        SAVE_SUCCESS("레시피 작성에 성공했습니다"),
         SELECT_ALL_SUCCESS("전체 조회에 성공했습니다."),
         SELECT_SUCCESS("조회에 성공했습니다.");
         private final String message;

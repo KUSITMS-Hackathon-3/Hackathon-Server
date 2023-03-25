@@ -1,10 +1,7 @@
 package com.example.hackathon.domain.ringredient.entity;
 
 import com.example.hackathon.domain.recipe.entity.Recipe;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Getter
 public class Ringredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
