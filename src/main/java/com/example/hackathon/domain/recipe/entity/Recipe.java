@@ -23,6 +23,8 @@ public class Recipe extends BaseTimeEntity {
 
     private String imageUrl;
 
+    private String tag;
+
     @ManyToOne
     @JoinColumn(name = "userIdx")
     User user;
