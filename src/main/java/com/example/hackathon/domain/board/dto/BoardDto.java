@@ -1,9 +1,12 @@
 package com.example.hackathon.domain.board.dto;
 
 import com.example.hackathon.domain.board.entity.Board;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import org.springframework.data.jpa.repository.Query;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -56,5 +59,30 @@ public abstract class BoardDto {
         }
     }
 
+    @Getter
+    @Builder
+    @ApiModel(description = "게시판 전체 조회를 위한 응답 객체")
+    public static class GetAllResponse {
+        private Long boardIdx;
+        private String title;
+        private String content;
+        private LocalDateTime createdAt;
+        private String userNickName;
+        private String imageUrl;
+        private Integer likeNums;
+        private Integer commentNums;
+
+        @QueryProjection
+        public GetAllResponse(Long boardIdx, String title, String content, LocalDateTime createdAt, String userNickName, String imageUrl, Integer likeNums, Integer commentNums){
+            this.boardIdx=boardIdx;
+            this.title=title;
+            this.content=content;
+            this.createdAt=createdAt;
+            this.userNickName=userNickName;
+            this.imageUrl=imageUrl;
+            this.likeNums=likeNums;
+            this.commentNums=commentNums;
+        }
+    }
 
 }
