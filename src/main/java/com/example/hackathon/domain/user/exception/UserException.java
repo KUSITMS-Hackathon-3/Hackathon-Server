@@ -1,6 +1,6 @@
 package com.example.hackathon.domain.user.exception;
 
-import com.example.hackathon.domain.global.exception.ApplicationException;
+import com.example.hackathon.global.exception.ApplicationException;
 import org.springframework.http.HttpStatus;
 
 public abstract class UserException extends ApplicationException {
