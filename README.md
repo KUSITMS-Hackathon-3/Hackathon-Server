@@ -12,7 +12,7 @@
 
 ## 📌 서비스 화면
 
-<img src="https://user-images.githubusercontent.com/86006389/227746134-b2ad9619-2c22-481b-9c8c-ffaec323e0eb.png">
+<img src="https://user-images.githubusercontent.com/86006389/227746208-0c2320eb-4a18-463f-9273-e12a23c4e260.gif">
 
 ## 🛠 기술스택
 ### iOS    
