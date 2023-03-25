@@ -64,4 +64,23 @@ public class CertificationService {
         return certificationDateDto;
     }
 
+    public List<String> findAllCertification(String month) {
+        month += "-01-00-00";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
+
+        LocalDateTime start = LocalDateTime.parse(month, formatter);
+        LocalDateTime end = start.plusMonths(1L);
+
+        List<Certification> certifications = certificationRepository.findAllByCreatedAtBetween(start, end);
+
+        List<String> dates = new ArrayList<>();
+        for (Certification certification : certifications) {
+            LocalDateTime createdAt = certification.getCreatedAt();
+            String date = createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            dates.add(date);
+        }
+
+        return dates;
+    }
+
 }
