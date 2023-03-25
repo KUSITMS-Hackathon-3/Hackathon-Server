@@ -1,8 +1,5 @@
 package com.example.hackathon.domain.recipe.dto;
 
-import com.example.hackathon.domain.rcontent.entity.Rcontent;
-import com.example.hackathon.domain.recipe.entity.Recipe;
-import com.example.hackathon.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +18,8 @@ public class RecipeResponseDto {
     private LocalDateTime createdDate;
     private String imageUrl;
     private Long userIdx;
-    private Recipe recipe;
-    private List<Rcontent> rContents;
+    private String tag;
+    private int like;
+    private List<RcontentDto> rcontentDtos;
+    private List<CommentDto> commentDtos;
 }
