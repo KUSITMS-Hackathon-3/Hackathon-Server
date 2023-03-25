@@ -13,7 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ public class CertificationServiceImpl implements CertificationService{
 
     @Override
     public void save(CertificationInsertDto certificationInsertDto) throws Exception {
-        User user=this.userRepository.findById(certificationInsertDto.getUserIdx()).orElseThrow(NotFoundUserIdException::new);
+        User user= this.userRepository.findById(certificationInsertDto.getUserIdx()).orElseThrow(NotFoundUserIdException::new);
 
         Certification certification = Certification.builder()
                 .user(user)
@@ -34,6 +37,8 @@ public class CertificationServiceImpl implements CertificationService{
 
         certificationRepository.save(certification);
         user.certificationReward();
+
+        this.userRepository.save(user);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class User extends BaseTimeEntity {
 
     private boolean isDeleted;
 
-    private Long score;
+    private Integer score;
 
     private Integer level;
 
@@ -52,11 +52,13 @@ public class User extends BaseTimeEntity {
     }
 
     public void certificationReward(){
+        
         this.score+=25;
         if(score/50>level){
             this.level+=1;
         }
     }
+
     public void recipeReward(){
         this.score+=50;
         if(score/50>level){

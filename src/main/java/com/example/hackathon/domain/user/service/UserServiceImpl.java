@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService{
                 .userId(signupRequest.getUserId())
                 .password(signupRequest.getPassword())
                 .nickName(signupRequest.getNickName())
-                .score(0L)
+                .score(0)
                 .level(0)
                 .role(ROLE_USER)
                 .build();
