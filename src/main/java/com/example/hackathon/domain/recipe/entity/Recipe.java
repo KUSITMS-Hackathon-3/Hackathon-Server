@@ -26,6 +26,8 @@ public class Recipe extends BaseTimeEntity {
 
     private String tag;
 
+    private int likeNum;
+
     @ManyToOne
     @JoinColumn(name = "userIdx")
     User user;
