@@ -46,6 +46,7 @@ public class RecipeService {
 
     public List<Recipe> findAllFeeds() {
         List<Recipe> allRecipes = recipeRepository.findAllByOrderByCreatedAtDesc();
+
         return allRecipes;
     }
 
@@ -61,6 +62,8 @@ public class RecipeService {
                 .level(recipe.getLevel())
                 .title(recipe.getTitle())
                 .rContents(rContents)
+                .nickname(recipe.getUser().getNickName())
+                .userIdx(recipe.getUser().getUserIdx())
                 .build();
 
         return recipeResponseDto;
