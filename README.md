@@ -37,4 +37,13 @@
 ### DB
 <img src="https://user-images.githubusercontent.com/86006389/227744846-fc67abe6-6799-4540-a1d7-6c748830977f.png" height="100">
 
-### ERD 구조
+## 📃 ERD 구조
+![image](https://user-images.githubusercontent.com/86006389/227745008-94d94901-4ca4-4f79-ad75-53bafa26ec1b.png)
+
+
+## ⚡️ 시스템 아키텍쳐
+![image](https://user-images.githubusercontent.com/86006389/227745642-cfe9a46a-b08a-4015-80b4-651b3f0138f3.png)
+
+
+## 🚙 Backend CI/ CD
+![image](https://user-images.githubusercontent.com/86006389/227745679-904dc6e0-3600-4c4a-9064-b459f23fad99.png)
