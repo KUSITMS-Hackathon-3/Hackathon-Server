@@ -1,12 +1,15 @@
 package com.example.hackathon.domain.board.dto;
 
 import com.example.hackathon.domain.board.entity.Board;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BoardDto {
 

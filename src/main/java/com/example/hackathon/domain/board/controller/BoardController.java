@@ -1,5 +1,6 @@
 package com.example.hackathon.domain.board.controller;
 
+import com.example.hackathon.domain.board.constant.BoardConstants;
 import com.example.hackathon.domain.board.constant.BoardConstants.EBoardController;
 import com.example.hackathon.domain.board.dto.BoardDto.CreateRequest;
 import com.example.hackathon.domain.board.dto.BoardDto.CreateResponse;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 import static com.example.hackathon.domain.board.constant.BoardConstants.EBoardResponseMessage.CREATE_BOARD_SUCCESS;
+import static com.example.hackathon.domain.board.constant.BoardConstants.EBoardResponseMessage.DELETE_BOARD_SUCCESS;
 
 @RequiredArgsConstructor
 @RestController
@@ -37,9 +39,24 @@ public class BoardController {
         return ResponseEntity.created(location).body(ResponseDto.create(CREATE_BOARD_SUCCESS.getMessage(), createResponse));
     }
 
-    //삭제
-    //게시글 좋아요
-    //댓글 생성
-    //게시글 전체 조회
-    //게시글 단건 조회 댓글 까지
+    @ApiOperation(value="게시글 삭제", notes="게시글을 삭제합니다")
+    @DeleteMapping("/{boardIdx}")
+    public ResponseEntity<ResponseDto> deleteBoard(@PathVariable Long boardIdx){
+        this.boardService.deleteBoard(boardIdx);
+        return ResponseEntity.ok(ResponseDto.create(DELETE_BOARD_SUCCESS.getMessage()));
+    }
+
+    @ApiOperation(value="좋아요 누르기", notes="좋아요를 누릅니다")
+    @PostMapping("/like/{boardIdx}")
+    public ResponseEntity<ResponseDto> likeBoard(@PathVariable Long boardIdx){
+        this.boardService.likeBoard(boardIdx);
+        return ResponseEntity.ok(ResponseDto.create(LIKE_BOARD_SUCCESS.getMessage()));
+    }
+
+    @ApiOperation(value="게시글을 시간 순으로 조회", notes="게시글을 시간 순으로 전체 조회합니다")
+    @GetMapping
+    public ResponseEntity<ResponseDto<List<GetAllResponse>>> getAllBoard(){
+        return ResponseEntity.ok(ResponseDto.create(GET_ALL_BOARD_SUCCESS.getMessage(),this.boardService.findAllByCreatedDate()));
+    }
+    
 }
