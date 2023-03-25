@@ -19,4 +19,5 @@ public class RecipeInsertDto {
     private int level;
     private Long userIdx;
     private String imageUrl;
+    private String tag;
 }

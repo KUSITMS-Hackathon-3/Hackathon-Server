@@ -38,6 +38,7 @@ public class RecipeService {
                 .imageUrl(recipeInsertDto.getImageUrl())
                 .level(recipeInsertDto.getLevel())
                 .title(recipeInsertDto.getTitle())
+                .tag(recipeInsertDto.getTag())
                 .user(user)
                 .build();
 
