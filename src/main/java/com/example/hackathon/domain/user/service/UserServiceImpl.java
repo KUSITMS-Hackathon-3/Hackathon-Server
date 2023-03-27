@@ -49,6 +49,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDto.LoginResponse login(LoginRequest loginRequest) {
+        /**
+         * 로그인할 때 예외 터지면 던지게 했어
+         */
         try {
             TokenInfoResponse tokenInfoResponse = this.validateLogin(loginRequest);
             return UserDto.LoginResponse.from(tokenInfoResponse);

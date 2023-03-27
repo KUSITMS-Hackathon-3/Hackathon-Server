@@ -47,6 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                /**
+                 * 우리는 JWT를 사용하는데 Session이 계속 켜져있으면
+                 * 토큰을 안보내도 Sesssion때문에 자동으로 인증 처리가 되어버려
+                 * 그래서 껐어
+                 * 이제 토큰이 헤더로 안넘어오면 아무것도 안될거야
+                 */
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //jwt 사용을 위해 Sesssion 사용 해제
                 .and()

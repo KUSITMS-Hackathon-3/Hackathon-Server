@@ -1,7 +1,5 @@
 package com.example.hackathon.global.config.security.jwt;
 
-import com.example.hackathon.domain.user.dto.UserDto;
-import com.example.hackathon.domain.user.service.UserServiceImpl;
 import com.example.hackathon.global.config.security.redis.RedisRepository;
 import com.example.hackathon.global.dto.TokenInfoResponse;
 import com.example.hackathon.domain.user.entity.User;
@@ -14,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,8 +31,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JwtTokenProvider implements InitializingBean {
     private final RedisRepository redisRepository;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
     private static final String AUTHORITIES_KEY = "auth";
     private static final String USER_IDX = "userIdx";
 
@@ -69,6 +63,9 @@ public class JwtTokenProvider implements InitializingBean {
         Date accessTokenValidity = new Date(now + this.accessTokenValidityTime);
         Date refreshTokenValidity = new Date(now + this.refreshTokenValidityTime);
 
+        /**
+         * 여기서 userIdx얻어서 아래에 claim에 추가해서 하는 중이었어
+         */
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         Long userIdx = principal.getUser().getUserIdx();
 
@@ -86,7 +83,7 @@ public class JwtTokenProvider implements InitializingBean {
                 .compact();
 
         /**
-         * refreshToken redis에 저장
+         * refreshToken redis에 저장하는 중
          */
         updateRefreshToken(userIdx, refreshToken);
 
@@ -102,6 +99,10 @@ public class JwtTokenProvider implements InitializingBean {
             throw e;
         }
     }
+    /**
+     * createToken 하면서 RefreshToken은 Redis에 저장하도록 했슴당
+     * 만약 맘에 안들면 삭제해줘...
+     */
 
     public Authentication getAuthentication(String accessToken) {
 
@@ -142,11 +143,16 @@ public class JwtTokenProvider implements InitializingBean {
 
     public boolean validateRefreshToken(String token) {
         try {
-            Object userIdx = Jwts.parserBuilder().setSigningKey(key).build()
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .get(USER_IDX);
-            redisRepository.getValues(userIdx.toString()).orElseThrow();
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+//            Object userIdx = Jwts.parserBuilder().setSigningKey(key).build()
+//                    .parseClaimsJws(token)
+//                    .getBody()
+//                    .get(USER_IDX);
+//            redisRepository.getValues(userIdx.toString()).orElseThrow();
+            /**
+             * Redis에 userIdx를 Key값으로 저장하려고 해서 Redis에 존재하는지 검사하는 로직이었어
+             * 그래서 RefreshToken 생성할 때 claim에 userIdx도 지금은 넣어지고 있을거야
+             */
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
@@ -174,30 +180,10 @@ public class JwtTokenProvider implements InitializingBean {
         }
     }
 
-    public Long getUserIdx(String refreshToken) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(refreshToken).getBody();
-        Long userIdx = claims.get(USER_IDX, Long.class);
-        return userIdx;
-    }
-
     public Long getExpiration(String accessToken) {
         Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody().getExpiration();
         Long now = new Date().getTime();
         return (expiration.getTime() - now);
-    }
-
-    public Authentication getAuthentication(Long userIdx) {
-        try {
-            User user = userRepository.findById(userIdx).orElseThrow();
-
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword());
-            Authentication authentication = this.authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-            return authentication;
-        } catch (NoSuchElementException e) {
-            log.error("올바르지 않은 userIdx 입니다.");
-            throw e;
-        }
     }
 }
 
