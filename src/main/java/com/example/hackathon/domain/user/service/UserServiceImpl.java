@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,8 +46,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDto.LoginResponse login(LoginRequest loginRequest) {
-        TokenInfoResponse tokenInfoResponse = this.validateLogin(loginRequest);
-        return UserDto.LoginResponse.from(tokenInfoResponse);
+        try {
+            TokenInfoResponse tokenInfoResponse = this.validateLogin(loginRequest);
+            return UserDto.LoginResponse.from(tokenInfoResponse);
+        } catch (AuthenticationException e) {
+            throw e;
+        }
     }
 
     private TokenInfoResponse validateLogin(LoginRequest loginRequest) {
