@@ -13,14 +13,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.hackathon.domain.user.constant.UserConstants.Role.ROLE_USER;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
+@Slf4j
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
@@ -45,8 +49,15 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDto.LoginResponse login(LoginRequest loginRequest) {
-        TokenInfoResponse tokenInfoResponse = this.validateLogin(loginRequest);
-        return UserDto.LoginResponse.from(tokenInfoResponse);
+        /**
+         * 로그인할 때 예외 터지면 던지게 했어
+         */
+        try {
+            TokenInfoResponse tokenInfoResponse = this.validateLogin(loginRequest);
+            return UserDto.LoginResponse.from(tokenInfoResponse);
+        } catch (AuthenticationException e) {
+            throw e;
+        }
     }
 
     private TokenInfoResponse validateLogin(LoginRequest loginRequest) {

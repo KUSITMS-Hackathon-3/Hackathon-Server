@@ -21,6 +21,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String REFRESH_TOKEN = "RefreshToken";
     private final JwtTokenProvider tokenProvider;
 
     @Override
@@ -60,6 +61,14 @@ public class JwtFilter extends OncePerRequestFilter {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+    private String resolveRefreshToken(HttpServletRequest request) {
+        String bearerRefreshToken = request.getHeader(REFRESH_TOKEN);
+        if (StringUtils.hasText(bearerRefreshToken) && bearerRefreshToken.startsWith("Bearer ")) {
+            return bearerRefreshToken.substring(7);
         }
         return null;
     }

@@ -10,6 +10,7 @@ import com.example.hackathon.domain.user.exception.NotFoundUserIdException;
 import com.example.hackathon.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CertificationServiceImpl implements CertificationService{
 
     private final CertificationRepository certificationRepository;

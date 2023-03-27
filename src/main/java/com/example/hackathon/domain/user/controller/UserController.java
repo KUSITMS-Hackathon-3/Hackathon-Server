@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,7 +33,14 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseDto<LoginResponse>> loginUser(@RequestBody LoginRequest loginRequest) {
-        LoginResponse loginResponse = this.userService.login(loginRequest);
-        return ResponseEntity.ok(ResponseDto.create(UserConstants.EBoardResponseMessage.LOGIN_SUCCESS.getMessage(),loginResponse));
+        try {
+            LoginResponse loginResponse = this.userService.login(loginRequest);
+            return ResponseEntity.ok(ResponseDto.create(UserConstants.EBoardResponseMessage.LOGIN_SUCCESS.getMessage(), loginResponse));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.ok(ResponseDto.create(UserConstants.UserExceptionList.NOT_FOUND_PASSWORD.getMessage()));
+        }
     }
+    /**
+     * 아이디 비밀번호 일치하지 않는경우 체크하도록 만들었어
+     */
 }
