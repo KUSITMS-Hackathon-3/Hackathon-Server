@@ -64,3 +64,15 @@
 
 ## 🚙 Backend CI/ CD
 ![image](https://user-images.githubusercontent.com/86006389/227745679-904dc6e0-3600-4c4a-9064-b459f23fad99.png)
+
+## 발표 자료
+![image](https://user-images.githubusercontent.com/86006389/228095865-6cea5e2a-fd00-43af-bff3-aaedf485a177.png)
+![image](https://user-images.githubusercontent.com/86006389/228095916-40a5fc32-1ca6-4163-853c-2bc612d48aa0.png)
+![image](https://user-images.githubusercontent.com/86006389/228095931-9868c662-6391-4b0b-bf7b-220b21108c79.png)
+![image](https://user-images.githubusercontent.com/86006389/228095945-1ac15376-0b6b-4253-be55-f1255d126a5a.png)
+![image](https://user-images.githubusercontent.com/86006389/228095957-15dcab74-c624-476b-ab15-7fd104bcd244.png)
+![image](https://user-images.githubusercontent.com/86006389/228095970-de5c2878-c985-46b0-9649-bb1f86fed716.png)
+![image](https://user-images.githubusercontent.com/86006389/228095978-e1c79201-f1e3-4531-8060-e473e9dbdc5b.png)
+![image](https://user-images.githubusercontent.com/86006389/228095995-cc166994-8acb-4eae-bf4f-10fa81760bd5.png)
+![image](https://user-images.githubusercontent.com/86006389/228096007-5f7943f8-5fa0-4465-b17a-861dfaaf66d6.png)
+![image](https://user-images.githubusercontent.com/86006389/228096019-edb02e2f-d6f8-4d62-bd2c-87e2e7822298.png)
