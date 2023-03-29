@@ -77,6 +77,27 @@
 ![image](https://user-images.githubusercontent.com/86006389/228096007-5f7943f8-5fa0-4465-b17a-861dfaaf66d6.png)
 ![image](https://user-images.githubusercontent.com/86006389/228096019-edb02e2f-d6f8-4d62-bd2c-87e2e7822298.png)
 
-## 개발 팀원
-- 백엔드: 김민수, 양원준
-- 프론트엔드: 이안진, 정태우
+## 팀원
+
+### 기획팀
+- 김효준
+- 박시은
+- 김가연
+
+### 디자이너팀
+- 최현아
+
+### iOS팀
+|이안진|정태우|
+|:-:|:---:|
+|<img src="https://user-images.githubusercontent.com/86006389/227494696-227a5c47-3d6a-4719-9d82-6b2468cb9cad.png" width="100" height="100">|<img src="https://user-images.githubusercontent.com/86006389/228582292-a6624b4e-cd23-4e05-8030-dc37170c65e7.png" width="100" height="100">|
+|[anjiniii](https://github.com/anjiniii)|[taewoojeong](https://github.com/taewoojeong)|
+
+
+### 백엔드팀
+|김민수|양원준|
+|:-:|:---:|
+|<img src="https://avatars.githubusercontent.com/u/86006389?v=4" alt="minsu20" width="100" height="100">|<img src="https://user-images.githubusercontent.com/86006389/228581379-53774e97-4e98-4f37-a228-3b6ce633989f.png" alt=ywj9811 height="100">|
+|[minsu20](https://github.com/minsu20)|[ywj9811](https://github.com/ywj9811)|
+
+
