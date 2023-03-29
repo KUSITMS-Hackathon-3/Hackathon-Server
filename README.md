@@ -76,3 +76,7 @@
 ![image](https://user-images.githubusercontent.com/86006389/228095995-cc166994-8acb-4eae-bf4f-10fa81760bd5.png)
 ![image](https://user-images.githubusercontent.com/86006389/228096007-5f7943f8-5fa0-4465-b17a-861dfaaf66d6.png)
 ![image](https://user-images.githubusercontent.com/86006389/228096019-edb02e2f-d6f8-4d62-bd2c-87e2e7822298.png)
+
+## 개발 팀원
+- 백엔드: 김민수, 양원준
+- 프론트엔드: 이안진, 정태우
