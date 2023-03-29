@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider implements InitializingBean {
-    private final RedisRepository redisRepository;
+//    private final RedisRepository redisRepository;
     private static final String AUTHORITIES_KEY = "auth";
     private static final String USER_IDX = "userIdx";
 
@@ -93,7 +93,12 @@ public class JwtTokenProvider implements InitializingBean {
     public void updateRefreshToken(Long userIdx, String refreshToken) {
         try {
             log.info("refreshToken 저장");
-            redisRepository.setValues(String.valueOf(userIdx), refreshToken, Duration.ofSeconds(refreshTokenValidityTime));
+
+
+//            redisRepository.setValues(String.valueOf(userIdx), refreshToken, Duration.ofSeconds(refreshTokenValidityTime));
+//            잠시 redis중지
+
+
         } catch (NoSuchElementException e) {
             log.error("일치하는 회원이 없습니다.");
             throw e;
