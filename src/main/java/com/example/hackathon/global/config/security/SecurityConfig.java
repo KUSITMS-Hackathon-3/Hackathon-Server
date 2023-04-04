@@ -22,7 +22,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
-
     @Bean
     public BCryptPasswordEncoder encodePassword() {
         return new BCryptPasswordEncoder();
@@ -45,7 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v3/api-docs").permitAll()
                 .antMatchers("/image/**").permitAll()
-                .antMatchers("/user/**").permitAll()
+                .antMatchers("/user/signup").permitAll()
+                .antMatchers("/user/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 /**
