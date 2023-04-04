@@ -166,7 +166,9 @@ public class JwtTokenProvider implements InitializingBean {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             String userIdx = getUserIdx(token);
-            redisRepository.getValues(userIdx).orElseThrow();
+            String redisToken = redisRepository.getValues(userIdx).orElseThrow();
+            if (!redisToken.equals(token))
+                throw new IllegalArgumentException("Refresh Token이 다릅니다.");
             /**
              * Redis에 userIdx를 Key값으로 저장하려고 해서 Redis에 존재하는지 검사하는 로직이었어
              * 그래서 RefreshToken 생성할 때 claim에 userIdx도 지금은 넣어지고 있을거야
