@@ -37,7 +37,8 @@ public class UserController {
         try {
             LoginResponse loginResponse = this.userService.login(loginRequest);
             return ResponseEntity.ok(ResponseDto.create(UserConstants.EBoardResponseMessage.LOGIN_SUCCESS.getMessage(), loginResponse));
-        } catch (AuthenticationException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.ok(ResponseDto.create(UserConstants.UserExceptionList.NOT_FOUND_PASSWORD.getMessage()));
         }
     }
@@ -45,10 +46,14 @@ public class UserController {
      * 아이디 비밀번호 일치하지 않는경우 체크하도록 만들었어
      */
 
-    @PostMapping("/reIssueAccessToken/{userIdx}")
-    public ResponseEntity<ResponseDto<LoginResponse>> reIssueAccessToken(@PathVariable Long userIdx){
-        LoginResponse loginResponse = this.userService.reIssueToken(userIdx);
-        return ResponseEntity.ok(ResponseDto.create(UserConstants.EBoardResponseMessage.REISSUE_SUCCESS.getMessage(), loginResponse));
+    @PostMapping("/reIssueToken/{userIdx}")
+    public ResponseEntity<ResponseDto<LoginResponse>> reIssueAccessToken(@PathVariable Long userIdx) {
+        try {
+            LoginResponse loginResponse = this.userService.reIssueToken(userIdx);
+            return ResponseEntity.ok(ResponseDto.create(UserConstants.EBoardResponseMessage.REISSUE_SUCCESS.getMessage(), loginResponse));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.ok(ResponseDto.create(UserConstants.UserExceptionList.REFRESH_TOKEN_ERROR.getMessage()));
+        }
     }
 
     @PostMapping("/logout")

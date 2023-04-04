@@ -22,8 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
+import java.util.NoSuchElementException;
 
 import static com.example.hackathon.domain.user.constant.UserConstants.Role.ROLE_USER;
 
@@ -82,11 +82,17 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public LoginResponse reIssueToken(Long userIdx) {
-        Authentication authentication = tokenProvider.getAuthentication(
-                redisRepository.getValues(userIdx.toString())
-                        .orElseThrow());
-        TokenInfoResponse token = tokenProvider.createToken(authentication);
-        return LoginResponse.from(token);
+        try {
+            String refreshToken = redisRepository.getValues(userIdx.toString()).orElseThrow();
+            Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+            TokenInfoResponse token = tokenProvider.createToken(authentication);
+
+            log.info("재발급 & 저장!");
+
+            return LoginResponse.from(token);
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException("RefreshToken이 올바르지 않습니다.");
+        }
     }
 
     @Override
