@@ -11,7 +11,8 @@ public class UserConstants {
     public enum EBoardResponseMessage{
         SIGNUP_SUCCESS("회원가입에 성공했습니다"),
         LOGIN_SUCCESS("로그인에 성공했습니다"),
-        LOGOUT_SUCCESS("로그아웃에 성공했습니다.");
+        LOGOUT_SUCCESS("로그아웃에 성공했습니다."),
+        REISSUE_SUCCESS("재발급에 성공했습니다.");
         private final String message;
     }
 
