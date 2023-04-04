@@ -21,7 +21,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String REFRESH_TOKEN = "RefreshToken";
     private final JwtTokenProvider tokenProvider;
 
     @Override
@@ -29,10 +28,18 @@ public class JwtFilter extends OncePerRequestFilter {
         String jwt = resolveToken(request);
         String requestURI = request.getRequestURI();
         try {
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+            /**
+             * 로그아웃 기능 구현하면 블랙리스트 체크 추가
+             */
+            if (StringUtils.hasText(jwt) && tokenProvider.validateAccessToken(jwt)) {
+                if (requestURI.equals("/user/ReIssueAccessToken")) {
+                    checkRefreshTokenAndReIssueAccessToken(jwt);
+                    return;
+                }
+
                 Authentication authentication = tokenProvider.getAuthentication(jwt);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
+                log.info("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
             }
         } catch (SecurityException | MalformedJwtException e) {
             request.setAttribute("exception", JWTExceptionList.WRONG_TYPE_TOKEN.getErrorCode());
@@ -65,11 +72,12 @@ public class JwtFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private String resolveRefreshToken(HttpServletRequest request) {
-        String bearerRefreshToken = request.getHeader(REFRESH_TOKEN);
-        if (StringUtils.hasText(bearerRefreshToken) && bearerRefreshToken.startsWith("Bearer ")) {
-            return bearerRefreshToken.substring(7);
+    private void checkRefreshTokenAndReIssueAccessToken(String token) {
+        try {
+            tokenProvider.validateRefreshToken(token);
+        } catch (Exception e) {
+            log.error("예외 발생 {}", e.getMessage());
+            throw e;
         }
-        return null;
     }
 }
