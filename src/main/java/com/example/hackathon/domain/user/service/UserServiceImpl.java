@@ -1,6 +1,7 @@
 package com.example.hackathon.domain.user.service;
 
 import com.example.hackathon.domain.user.dto.UserDto.LoginResponse;
+import com.example.hackathon.domain.user.dto.UserDto.LogoutRequest;
 import com.example.hackathon.global.config.security.jwt.JwtTokenProvider;
 import com.example.hackathon.global.config.security.redis.RedisRepository;
 import com.example.hackathon.global.dto.TokenInfoResponse;
@@ -20,6 +21,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
 
 import static com.example.hackathon.domain.user.constant.UserConstants.Role.ROLE_USER;
 
@@ -83,6 +87,18 @@ public class UserServiceImpl implements UserService{
                         .orElseThrow());
         TokenInfoResponse token = tokenProvider.createToken(authentication);
         return LoginResponse.from(token);
+    }
+
+    @Override
+    public void logout(LogoutRequest logoutRequest) {
+        String token = logoutRequest.getToken().substring(7);
+        /**
+         * Bearer가 함께 넘어오는가
+         * 일단은 넘어오는것으로 처리
+         */
+        Long expiration = tokenProvider.getExpiration(token);
+        redisRepository.deleteValues(String.valueOf(logoutRequest.getUserIdx())); //Refresh Token 삭제
+        redisRepository.setValues("blackList : " + token, token, Duration.ofDays(expiration)); //Access Token 남은 시간동안 블랙리스트
     }
 
     private void validateOverlap(String userId) {

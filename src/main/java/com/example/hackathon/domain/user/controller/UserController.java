@@ -1,12 +1,12 @@
 package com.example.hackathon.domain.user.controller;
 
+import com.example.hackathon.domain.user.dto.UserDto.LogoutRequest;
 import com.example.hackathon.global.dto.ResponseDto;
 import com.example.hackathon.domain.user.constant.UserConstants;
 import com.example.hackathon.domain.user.dto.UserDto.LoginRequest;
 import com.example.hackathon.domain.user.dto.UserDto.LoginResponse;
 import com.example.hackathon.domain.user.dto.UserDto.SignupRequest;
 import com.example.hackathon.domain.user.service.UserService;
-import com.example.hackathon.global.dto.TokenInfoResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +49,11 @@ public class UserController {
     public ResponseEntity<ResponseDto<LoginResponse>> reIssueAccessToken(@PathVariable Long userIdx){
         LoginResponse loginResponse = this.userService.reIssueToken(userIdx);
         return ResponseEntity.ok(ResponseDto.create(UserConstants.EBoardResponseMessage.REISSUE_SUCCESS.getMessage(), loginResponse));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseDto<ResponseDto>> logout(@RequestBody LogoutRequest logoutRequest){
+        this.userService.logout(logoutRequest);
+        return ResponseEntity.ok(ResponseDto.create(UserConstants.EBoardResponseMessage.LOGOUT_SUCCESS.getMessage()));
     }
 }

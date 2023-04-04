@@ -23,6 +23,16 @@ public abstract class UserDto {
     @Getter
     @AllArgsConstructor
     @Builder
+    @NoArgsConstructor
+    @ApiModel(description = "로그아웃을 위한 요청객체")
+    public static class LogoutRequest {
+        private Long userIdx;
+        private String token;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @ApiModel(description = "로그인을 위한 요청객체")
     public static class LoginRequest {
