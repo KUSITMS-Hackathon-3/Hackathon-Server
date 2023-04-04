@@ -1,6 +1,8 @@
 package com.example.hackathon.domain.user.service;
 
+import com.example.hackathon.domain.user.dto.UserDto.LoginResponse;
 import com.example.hackathon.global.config.security.jwt.JwtTokenProvider;
+import com.example.hackathon.global.config.security.redis.RedisRepository;
 import com.example.hackathon.global.dto.TokenInfoResponse;
 import com.example.hackathon.domain.user.dto.UserDto;
 import com.example.hackathon.domain.user.dto.UserDto.LoginRequest;
@@ -31,6 +33,8 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider tokenProvider;
+    private final RedisRepository redisRepository;
+
 
     @Override
     public void signup(UserDto.SignupRequest signupRequest) {
@@ -48,13 +52,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserDto.LoginResponse login(LoginRequest loginRequest) {
-        /**
-         * 로그인할 때 예외 터지면 던지게 했어
-         */
+    public LoginResponse login(LoginRequest loginRequest) {
         try {
             TokenInfoResponse tokenInfoResponse = this.validateLogin(loginRequest);
-            return UserDto.LoginResponse.from(tokenInfoResponse);
+            return LoginResponse.from(tokenInfoResponse);
         } catch (AuthenticationException e) {
             throw e;
         }
@@ -75,6 +76,14 @@ public class UserServiceImpl implements UserService{
         return this.userRepository.findByUserId(userId).orElseThrow(NotFoundUserIdException::new);
     }
 
+    @Override
+    public LoginResponse reIssueToken(Long userIdx) {
+        Authentication authentication = tokenProvider.getAuthentication(
+                redisRepository.getValues(userIdx.toString())
+                        .orElseThrow());
+        TokenInfoResponse token = tokenProvider.createToken(authentication);
+        return LoginResponse.from(token);
+    }
 
     private void validateOverlap(String userId) {
         userRepository.findByUserId(userId)

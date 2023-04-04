@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider implements InitializingBean {
-//    private final RedisRepository redisRepository;
+    private final RedisRepository redisRepository;
     private static final String AUTHORITIES_KEY = "auth";
     private static final String USER_IDX = "userIdx";
 
@@ -58,47 +58,55 @@ public class JwtTokenProvider implements InitializingBean {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        long now = (new Date()).getTime();
+        Date current = new Date();
 
-        Date accessTokenValidity = new Date(now + this.accessTokenValidityTime);
-        Date refreshTokenValidity = new Date(now + this.refreshTokenValidityTime);
-
-        /**
-         * 여기서 userIdx얻어서 아래에 claim에 추가해서 하는 중이었어
-         */
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         Long userIdx = principal.getUser().getUserIdx();
 
-        String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities)
-                .signWith(key, SignatureAlgorithm.HS512)
-                .setExpiration(accessTokenValidity)
-                .compact();
-
-        String refreshToken = Jwts.builder()
-                .setExpiration(refreshTokenValidity)
-                .claim(USER_IDX, userIdx)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        String accessToken = createAccessToken(authorities, current, userIdx);
+        String refreshToken = createRefreshToken(authorities, current, userIdx);
 
         /**
          * refreshToken redis에 저장하는 중
          */
         updateRefreshToken(userIdx, refreshToken);
 
-        return TokenInfoResponse.from("Bearer", accessToken, refreshToken, refreshTokenValidityTime);
+        return TokenInfoResponse.from("Bearer", accessToken, refreshToken, accessTokenValidityTime);
+    }
+
+    private String createRefreshToken(String authorities, Date current, Long userIdx) {
+        Date refreshTokenValidity = new Date(current.getTime() + this.refreshTokenValidityTime);
+
+        String refreshToken = Jwts.builder()
+                .setSubject("Refresh")
+                .claim(AUTHORITIES_KEY, authorities)
+                .claim(USER_IDX, userIdx)
+                .setIssuedAt(current)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(refreshTokenValidity)
+                .compact();
+        return refreshToken;
+    }
+
+    private String createAccessToken(String authorities, Date current, Long userIdx) {
+        Date accessTokenValidity = new Date(current.getTime() + this.accessTokenValidityTime);
+
+        String accessToken = Jwts.builder()
+                .setSubject("Access")
+                .claim(AUTHORITIES_KEY, authorities)
+                .claim(USER_IDX, userIdx)
+                .setIssuedAt(current)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(accessTokenValidity)
+                .compact();
+
+        return accessToken;
     }
 
     public void updateRefreshToken(Long userIdx, String refreshToken) {
         try {
             log.info("refreshToken 저장");
-
-
-//            redisRepository.setValues(String.valueOf(userIdx), refreshToken, Duration.ofSeconds(refreshTokenValidityTime));
-//            잠시 redis중지
-
-
+            redisRepository.setValues(String.valueOf(userIdx), refreshToken, Duration.ofSeconds(refreshTokenValidityTime));
         } catch (NoSuchElementException e) {
             log.error("일치하는 회원이 없습니다.");
             throw e;
@@ -109,9 +117,9 @@ public class JwtTokenProvider implements InitializingBean {
      * 만약 맘에 안들면 삭제해줘...
      */
 
-    public Authentication getAuthentication(String accessToken) {
+    public Authentication getAuthentication(String token) {
 
-        Claims claims = parseClaims(accessToken);
+        Claims claims = parseClaims(token);
 
         if (claims.get("auth") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
@@ -121,13 +129,22 @@ public class JwtTokenProvider implements InitializingBean {
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
+        String userIdx = String.valueOf(claims.get(USER_IDX));
+        User user = this.userRepository.findById(Long.parseLong(userIdx))
+                .orElseThrow(NotFoundUserIdException::new);
 
-        //User user = new User(claims.getSubject(), "", authorities);
-        User user = this.userRepository.findByUserId(claims.getSubject()).orElseThrow(NotFoundUserIdException::new);
-        return new UsernamePasswordAuthenticationToken(new UserDetailsImpl(user), accessToken, authorities);
+        return new UsernamePasswordAuthenticationToken(new UserDetailsImpl(user), token, authorities);
     }
 
-    public boolean validateToken(String token) {
+    private Claims parseClaims(String token) {
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+    }
+
+    public boolean validateAccessToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
@@ -147,13 +164,12 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     public boolean validateRefreshToken(String token) {
+        if (!getSubject(token).equals("Refresh"))
+            throw new IllegalArgumentException("Refresh Token이 아닙니다.");
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-//            Object userIdx = Jwts.parserBuilder().setSigningKey(key).build()
-//                    .parseClaimsJws(token)
-//                    .getBody()
-//                    .get(USER_IDX);
-//            redisRepository.getValues(userIdx.toString()).orElseThrow();
+            String userIdx = getUserIdx(token);
+            redisRepository.getValues(userIdx).orElseThrow();
             /**
              * Redis에 userIdx를 Key값으로 저장하려고 해서 Redis에 존재하는지 검사하는 로직이었어
              * 그래서 RefreshToken 생성할 때 claim에 userIdx도 지금은 넣어지고 있을거야
@@ -177,16 +193,20 @@ public class JwtTokenProvider implements InitializingBean {
         }
     }
 
-    private Claims parseClaims(String accessToken) {
-        try {
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims();
-        }
+    public String getSubject(String token) {
+        Claims claims = parseClaims(token);
+
+        return claims.getSubject();
     }
 
-    public Long getExpiration(String accessToken) {
-        Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody().getExpiration();
+    public String getUserIdx(String token) {
+        Claims claims = parseClaims(token);
+
+        return claims.get(USER_IDX).toString();
+    }
+
+    public Long getExpiration(String token) {
+        Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getExpiration();
         Long now = new Date().getTime();
         return (expiration.getTime() - now);
     }
