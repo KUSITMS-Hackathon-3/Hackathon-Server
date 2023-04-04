@@ -20,10 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -144,7 +141,7 @@ public class JwtTokenProvider implements InitializingBean {
         }
     }
 
-    public boolean validateAccessToken(String token) {
+    public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
@@ -191,6 +188,12 @@ public class JwtTokenProvider implements InitializingBean {
             log.error("유효하지 않은 JWT 입니다.");
             throw e;
         }
+    }
+
+    public boolean checkBlackList(String token) {
+        if (redisRepository.checkBlackList(token).isPresent())
+            throw new IllegalArgumentException("로그아웃된 유저입니다.");
+        return true;
     }
 
     public String getSubject(String token) {
