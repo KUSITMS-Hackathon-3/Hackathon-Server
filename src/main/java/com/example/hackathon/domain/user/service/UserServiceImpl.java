@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService{
          */
         Long expiration = tokenProvider.getExpiration(token);
         redisRepository.deleteValues(String.valueOf(logoutRequest.getUserIdx())); //Refresh Token 삭제
-        redisRepository.setValues("blackList : " + token, token, Duration.ofDays(expiration)); //Access Token 남은 시간동안 블랙리스트
+        redisRepository.setValues("blackList : " + token, token, Duration.ofSeconds(expiration)); //Access Token 남은 시간동안 블랙리스트
     }
 
     private void validateOverlap(String userId) {
