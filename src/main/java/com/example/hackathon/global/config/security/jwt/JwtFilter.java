@@ -31,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
             /**
              * 로그아웃 기능 구현하면 블랙리스트 체크 추가
              */
-            if (StringUtils.hasText(jwt) && tokenProvider.validateAccessToken(jwt)) {
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt) && tokenProvider.checkBlackList(jwt)) {
                 if (requestURI.equals("/user/ReIssueAccessToken")) {
                     checkRefreshTokenAndReIssueAccessToken(jwt);
                     return;

@@ -3,6 +3,7 @@ package com.example.hackathon.domain.user.service;
 import com.example.hackathon.domain.user.dto.UserDto;
 import com.example.hackathon.domain.user.dto.UserDto.LoginRequest;
 import com.example.hackathon.domain.user.dto.UserDto.LoginResponse;
+import com.example.hackathon.domain.user.dto.UserDto.LogoutRequest;
 import com.example.hackathon.domain.user.entity.User;
 import com.example.hackathon.global.dto.TokenInfoResponse;
 
@@ -13,4 +14,5 @@ public interface UserService {
     User validateUserId(String userId);
     LoginResponse reIssueToken(Long userIdx);
     //재발급
+    void logout(LogoutRequest logoutRequest);
 }
