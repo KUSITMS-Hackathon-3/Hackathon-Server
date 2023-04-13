@@ -51,11 +51,13 @@ public abstract class UserDto {
     public static class LoginResponse {
         private String accessToken;
         private String refreshToken;
+        private Long userIdx;
 
         public static LoginResponse from(TokenInfoResponse tokenInfoResponse) {
             return LoginResponse.builder()
                     .accessToken(tokenInfoResponse.getAccessToken())
                     .refreshToken(tokenInfoResponse.getRefreshToken())
+                    .userIdx(tokenInfoResponse.getUserIdx())
                     .build();
         }
     }
